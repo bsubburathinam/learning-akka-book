@@ -1,0 +1,13 @@
+New log file opened at Mon Aug 01 15:14:32 MDT 2016 by 19223@CPU273
+Taking next connection to: 35283
+New client attempting to connect on port: 34050-35283
+  Address = /127.0.1.1:35283
+This client on port 34050 has uuid ea962286-d345-4cf3-bece-5c7b440b2643 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-ea962286-d345-4cf3-bece-5c7b440b2643
+Taking next connection to: 35283
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
+Closing the 19223@CPU273 logs at Mon Aug 01 15:17:32 MDT 2016, goodbye.

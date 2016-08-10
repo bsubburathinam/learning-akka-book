@@ -5,7 +5,7 @@ import akka.util.Timeout
 import org.scalatest.{FunSpecLike, Matchers}
 import akka.pattern.ask
 
-import scala.concurrent.Await
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 
 class ScalaPongActorTest extends FunSpecLike with Matchers
@@ -18,15 +18,9 @@ class ScalaPongActorTest extends FunSpecLike with Matchers
   describe("Pong actor") { // The subject of the test
     import scala.concurrent.ExecutionContext.Implicits.global
     it ("should respond with Pong") { // Behavior expected from subject
-      val future = pongActor ? "Ping"
-      future
-        .onSuccess({
-          case "Pong" => { // executes in "Fork join pool" thread
-            println("Got pong.")
-          }
-          case _ => throw new IllegalStateException("Did not receive Pong.")
-        })
-      Thread.sleep(1000)
+      val future = askPong("Ping").flatMap(_ => askPong("Ping"))
+      val result = Await.result(future.mapTo[String], 1 second)
+      assert( "Pong" === result )
    }
     it ("should fail on unknown message") {
       val future = pongActor ? "unknown"
@@ -34,5 +28,9 @@ class ScalaPongActorTest extends FunSpecLike with Matchers
         Await.result(future.mapTo[String], 1 second)
       }
     }
+  }
+
+  private def askPong(msg:String) : Future[String] = {
+    (this.pongActor ? msg).mapTo[String]
   }
 }
